@@ -13,15 +13,15 @@ if ! ping -c 1 -W 2 "$TARGET_IP" >/dev/null 2>&1; then
 fi
 
 # Remove previous CTF entries
-sed -i '/# CTF Environment/,/# End CTF Environment/d' /etc/hosts
+sed -i '/# Sec-Org Environment/,/# End Sec-Org Environment/d' /etc/hosts
 
 # Add hostname mappings
 cat >> /etc/hosts <<EOF
-# CTF Environment
+# Sec-Org Environment
 $TARGET_IP sec-org.fi
 $TARGET_IP www.sec-org.fi
 $TARGET_IP intra.sec-org.fi
-# End CTF Environment
+# End Sec-Org Environment
 EOF
 
 # Verify resolution
