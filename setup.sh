@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 set -euo pipefail
 
@@ -54,4 +53,4 @@ echo "[OK] Target VM is reachable."
 echo "[OK] Network configuration verified."
 echo
 echo "CTF environment ready."
-```
+
