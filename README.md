@@ -273,21 +273,21 @@ For every step, document:
 - **why** it matters (how it could be used by an attacker)
  
 ### Executive Summary
- 
+
 A short, non-technical summary for the Boss (max. half a page): the overall security level of the server, the most serious findings and your most important recommendations.
 
 ### 1. Reconnaissance
- 
+
 What publicly available information could help you gain access? Examine the email from the Boss and the public website.
- 
+
 - This step is **passive**. You may read the email and browse the website like a normal visitor, but do **not** scan, enumerate or brute-force anything yet.
- 
+
 > ℹ️ Have you read the email from the Boss carefully? What information can you find there?
- 
+
 ### 2. Enumeration
- 
+
 Use manual and automated methods to scan and enumerate the target VM. Document:
- 
+
 - Open ports and services
 - Subdomains, directories and files
 - Usernames and other information about users
@@ -295,9 +295,9 @@ Use manual and automated methods to scan and enumerate the target VM. Document:
 - A list of possible entry points, based on the above
  
 ### 3. Foothold
- 
+
 Use your enumeration results to gain access to the system.
- 
+
 - Try the entry points you identified, using both manual and automated methods.
 - Follow each path as far as you can, until you either gain access or decide to try another path.
 - Document new findings as you go, and test any new entry points that come up.
@@ -305,13 +305,13 @@ Use your enumeration results to gain access to the system.
 - Before moving on, check whether there is another way in. If you find another user's `flag.txt`, include that too.
  
 ### 4. Privilege Escalation
- 
+
 - From your user account, use privilege escalation techniques to become root.
 - When you have succeeded, find `root.txt` in the root user's home directory. Include its contents and a screenshot in your report.
  
 At this point, the server is completely under your control. Congratulations!
 
-### 5. Fix Security Issues
+### 5. Remediations
 
 Fix all security issues you find. This is an important part of the project: once you are finished, it must not be possible to gain access to the server using the same methods.
 
