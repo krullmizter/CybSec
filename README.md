@@ -47,6 +47,7 @@ You are provided with a vulnerable VM representing Sec-Org's server environment 
 - Use discovered credentials against any other systems.
 - Perform denial-of-service attacks against anything outside your own lab environment.
 - Attempt to compromise another student's virtual machine.
+- Change the target VM's network settings, for example by adding a NAT or bridged adapter.
 
 > ⚠️ If you are unsure whether an action is within scope, ask before performing it.
 
@@ -73,7 +74,7 @@ Total course project points: **60 points**
 | **30** | The report (written thoroughly and clearly) |
 | **10** | User flags found (before or after gaining root) |
 | **5** | Root flag found |
-| **15** | Fixing security issues |
+| **15** | Fixing security issues, including documenting available patches and updates |
 
 ⚠️ **Notice**
 - Flags are unique to each Target VM, so you cannot share your flags with or use flags from anyone else.
@@ -264,45 +265,68 @@ If the script completes successfully, the course project environment is ready. F
 
 ## Penetration Testing Report
 
-When you’re done with the testing, create and submit a penetration testing report with the following headings:
+When you have finished testing, write and submit a penetration testing report. Structure it with the headings below.
+ 
+For every step, document:
+- **what** you did (tools and commands used)
+- **what** you found (include screenshots or command output as evidence)
+- **why** it matters (how it could be used by an attacker)
+ 
+### Executive Summary
+ 
+A short, non-technical summary for the Boss (max. half a page): the overall security level of the server, the most serious findings and your most important recommendations.
 
 ### 1. Reconnaissance
-
-What can you find in publicly available information that could be useful for gaining access? (Correspondence, website, etc.) This step is performed completely passively and manually; no aggressive methods such as scanning or enumeration.
-
-> TIP: Have you read the email from “the Boss” carefully? What information can you find there?
-
+ 
+What publicly available information could help you gain access? Examine the email from the Boss and the public website.
+ 
+- This step is **passive**. You may read the email and browse the website like a normal visitor, but do **not** scan, enumerate or brute-force anything yet.
+ 
+> ℹ️ Have you read the email from the Boss carefully? What information can you find there?
+ 
 ### 2. Enumeration
-
-By using manual and automated methods for scanning and enumeration, what information can you find?
-- Open services, subdomains, directories, users
-- Software versions – are there any known vulnerabilities for these?
-- Make a list of possible entry points.
-
+ 
+Use manual and automated methods to scan and enumerate the target VM. Document:
+ 
+- Open ports and services
+- Subdomains, directories and files
+- Usernames and other information about users
+- Software versions, and any known vulnerabilities (CVEs) for them
+- A list of possible entry points, based on the above
+ 
 ### 3. Foothold
-
-Use the enumeration you performed earlier to try to gain access to the system!
-
-- Use manual and automated methods to try to gain access through the entry points you identified in the previous step.
-- Continue following each path as far as you can until you either successfully gain access or temporarily give up and try another path.
-- Write down any new findings as you go, and of course test any new entry points if they arise.
-- Once you have successfully gained access as a user, search for the file flag.txt in the user's home directory and include the contents of the file in your report!
-- Before moving on to the next step, check whether there is another way in. (If you find another user's flag.txt, include that in the report as well!)
-
+ 
+Use your enumeration results to gain access to the system.
+ 
+- Try the entry points you identified, using both manual and automated methods.
+- Follow each path as far as you can, until you either gain access or decide to try another path.
+- Document new findings as you go, and test any new entry points that come up.
+- When you have gained access as a user, find `flag.txt` in that user's home directory. Include its contents and a screenshot in your report.
+- Before moving on, check whether there is another way in. If you find another user's `flag.txt`, include that too.
+ 
 ### 4. Privilege Escalation
-
-- Once you are inside the server as a user, try to become root on the server by using different privilege escalation techniques.
-- Once you have succeeded, search for the file root.txt in the root user's home directory and include the contents of the file in your report!
-- The server is now completely under your control. Congratulations!
+ 
+- From your user account, use privilege escalation techniques to become root.
+- When you have succeeded, find `root.txt` in the root user's home directory. Include its contents and a screenshot in your report.
+ 
+At this point, the server is completely under your control. Congratulations!
 
 ### 5. Fix Security Issues
 
-Fix all security issues you find. Note that this is an important part of the project: it should not be possible to gain access to the server using the same methods once you are finished!
+Fix all security issues you find. This is an important part of the project: once you are finished, it must not be possible to gain access to the server using the same methods.
 
-- Report all actions you take (a list of all vulnerabilities and how you fixed them).
-- Look back at the enumeration phase. Is there anything suspicious that has still not been checked?
-- Regarding any vulnerabilities in locally developed source code, the optimal solution would of course be to fix the vulnerabilities so that everything continues to work. However, for the purposes of this project, it is acceptable to “temporarily” disable/block vulnerable services and replace the frontend with a message such as “update in progress” or something similar.
-- If official patches are available, they must be implemented. It is not acceptable to simply shut down everything on the server; the server must still be able to perform its primary functions.
-- Be careful not to lock yourself out of the server! Keep at least port 22 (SSH) open. Ask for help if this happens anyway.
-- If you have not managed to complete the Privilege Escalation part and therefore have not managed to become root, at least fix the issues that can be fixed using only normal user privileges!
+> ℹ️ **The target VM has no Internet access and must stay on the host-only network during the whole project.** Most security issues can be fixed without Internet access, for example by changing credentials, permissions, configuration or source code.
+
+- **Report all actions you take.** List every vulnerability you found and how you fixed it.
+- **Look back at the enumeration phase.** Is there anything suspicious that you have not checked yet?
+- **Locally developed source code:** The best solution is to fix the vulnerabilities so that everything continues to work. For this project, however, it is acceptable to "temporarily" disable or block vulnerable services and replace the frontend with a message such as "Update in progress".
+- **Available patches and updates:** You cannot install updates on the target VM. Instead, for each vulnerable package or piece of software, document:
+  - the software and its **installed version** (e.g. from `dpkg -l <package>` or `<program> --version` on the target VM)
+  - the **vulnerability** (CVE number or security advisory, if one exists)
+  - the **patched version or update** that fixes it, and where you found it (e.g. the vendor's website)
+  - the **mitigation** you applied instead, e.g. a configuration change or disabling the vulnerable feature
+- **Keep the server working.** Do not simply shut everything down, the server must still be able to perform its primary functions.
+- **Don't lock yourself out.** Keep at least port 22 (SSH) open. If you get locked out anyway, ask for help.
+- **Verify your fixes.** After each fix, repeat the attack from Kali to confirm that it no longer works.
+- **No root access?** If you did not complete the Privilege Escalation step, fix at least the issues that can be fixed with normal user privileges.
 
