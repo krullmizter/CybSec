@@ -103,7 +103,7 @@ Instead, you will run the Target VM as an emulated x86-64 virtual machine in UTM
 #### Step 1: Convert the Target VM's disk
 1. Install [UTM](https://mac.getutm.app/) if you don't have it.
 2. Install QEMU: `brew install qemu`, which includes the `qemu-img` tool needed to convert the disk.
-3. In Terminal, go to the folder where you downloaded `sec-org.ova` (usually `~/Downloads`). Create a directory for the Target VM, copy the `.ova` file into it, and move into the new directory:
+3. In Terminal, Create a directory for the Target VM, and move into the new directory:
    
    ```bash
    mkdir ~/Downloads/sec-org && cd ~/Downloads/sec-org
