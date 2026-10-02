@@ -90,7 +90,7 @@ Total course project points: **60 points**
 - Each flag is a file named `flag.txt`. Its contents look like `CTF{...}` — submit the **whole** string, exactly as shown, including the `CTF{` and closing `}`.
 - Flags are unique to each Target VM, so you cannot share your flags with or use flags from anyone else.
 - If you submit as a group, submit the flags of all group members in the same submission.
-
+  - If you are sharing a Target VM then only one set of flags needs to be submitted. However you need to explain how you worked as a group and how you technically carried out the course project.
 ---
 
 ## Getting Started
