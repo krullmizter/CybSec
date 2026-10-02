@@ -18,6 +18,16 @@ Subject: Information for the Sec-Org Penetration Test
 > The Boss
 ```
 
+## Contents
+
+- [Project Overview](#project-overview) — scope, rules of engagement, submission and grading
+- [Getting Started](#getting-started) — download and set up the Target VM (Apple Silicon or Intel/Windows)
+- [Kali Linux Configuration](#kali-linux-configuration) — network adapters and the setup script
+- [Penetration Testing Report](#penetration-testing-report) — what to write and submit
+  - [Reconnaissance](#1-reconnaissance) · [Enumeration](#2-enumeration) · [Foothold](#3-foothold) · [Privilege Escalation](#4-privilege-escalation) · [Remediations](#5-remediations)
+
+---
+
 ## Project Overview
 
 > ⚠️ If you would like guidance or the course project translated into Swedish, contact me and I'll provide it.
@@ -77,6 +87,7 @@ Total course project points: **60 points**
 | **15** | Fixing security issues, including documenting available patches and updates |
 
 ⚠️ **Notice**
+- Each flag is a file named `flag.txt`. Its contents look like `CTF{...}` — submit the **whole** string, exactly as shown, including the `CTF{` and closing `}`.
 - Flags are unique to each Target VM, so you cannot share your flags with or use flags from anyone else.
 - If you submit as a group, submit the flags of all group members in the same submission.
 
@@ -133,8 +144,8 @@ Instead, you will run the Target VM as an emulated x86-64 virtual machine in UTM
 
 1. **Drives:** Delete the blank default drive. Then select **New… → Import** and select `sec-org.qcow2`.
     - Set the interface to **VirtIO** (if the VM won't boot, try **SATA**).
-3. **Network:** Set **Network Mode** to **Host Only**. Do not add any other network devices.
-4. On the same **Network** page, click **Show Advanced Settings** and enter:
+2. **Network:** Set **Network Mode** to **Host Only**. Do not add any other network devices.
+3. On the same **Network** page, click **Show Advanced Settings** and enter:
 
    | Setting       | Value             |
    |---------------|-------------------|
@@ -145,7 +156,7 @@ Instead, you will run the Target VM as an emulated x86-64 virtual machine in UTM
 
    These settings place the Target VM on the network it expects and keep DHCP-assigned addresses from conflicting with the target's static IP address.
 
-5. Click **Save**.
+4. Click **Save**.
 
 #### Step 4: Start the Target VM
 
@@ -252,6 +263,15 @@ The script configures the hostname settings required for the assignment and veri
 
 If the script completes successfully, the course project environment is ready. From here, use the penetration-testing methodology covered in the course to assess the Sec-Org environment and meet the requirements in the email from the boss.
 
+> 💾 **Take a snapshot now.** Once both VMs are set up and talking to each other, take a snapshot of the Target VM (and of Kali). If anything breaks later, you can roll back instead of starting over. Take another snapshot before the **Remediations** phase, so you can re-run your attacks against the original, vulnerable state to confirm your fixes work.
+
+### Tools and wordlists on Kali
+
+A couple of things you will likely need are not ready to use out of the box:
+
+- **`rockyou` wordlist:** ships compressed. Unpack it once with `sudo gunzip /usr/share/wordlists/rockyou.txt.gz`, after which it lives at `/usr/share/wordlists/rockyou.txt`.
+- **SecLists** (large collection of wordlists, useful for subdomain/directory brute-forcing) is not installed by default: `sudo apt update && sudo apt install seclists`. It installs under `/usr/share/seclists/`.
+
 ---
 
 ### Technical Troubleshooting
@@ -271,6 +291,12 @@ For every step, document:
 - **what** you did (tools and commands used)
 - **what** you found (include screenshots or command output as evidence)
 - **why** it matters (how it could be used by an attacker)
+
+For each security weakness you find, also give it:
+- a **severity** rating — High, Medium or Low (or a CVSS score if you prefer) — based on how easy it is to exploit and how much damage it allows
+- a **classification**, so the finding is described in standard terms:
+  - **CVE** — for known vulnerabilities in third-party software (e.g. an outdated package). Not every finding has a CVE.
+  - **CWE** — the *type* of weakness ([cwe.mitre.org](https://cwe.mitre.org/)). Use this for issues in locally-developed code and configuration that have no CVE, e.g. SQL injection (CWE-89), weak password hashing (CWE-916), or insecure file permissions (CWE-732).
  
 ### Executive Summary
 
@@ -293,6 +319,8 @@ Use manual and automated methods to scan and enumerate the target VM. Document:
 - Usernames and other information about users
 - Software versions, and any known vulnerabilities (CVEs) for them
 - A list of possible entry points, based on the above
+
+> ℹ️ If you're not sure where to start, think in categories rather than specific tools: port/service scanning, virtual-host and directory brute-forcing, web-application and CMS scanning, file-share enumeration, and (later) offline password/hash cracking. You decide which tools fit each category.
  
 ### 3. Foothold
 
@@ -307,7 +335,7 @@ Use your enumeration results to gain access to the system.
 ### 4. Privilege Escalation
 
 - From your user account, use privilege escalation techniques to become root.
-- When you have succeeded, find `root.txt` in the root user's home directory. Include its contents and a screenshot in your report.
+- When you have succeeded, find `flag.txt` in the root user's home directory (`/root/flag.txt`). Include its contents and a screenshot in your report.
  
 At this point, the server is completely under your control. Congratulations!
 
@@ -317,16 +345,19 @@ Fix all security issues you find. This is an important part of the project: once
 
 > ℹ️ **The target VM has no Internet access and must stay on the host-only network during the whole project.** Most security issues can be fixed without Internet access, for example by changing credentials, permissions, configuration or source code.
 
+You do this work *on* the target, using the access you gained during the test (your shell or root) — or the VM's own console if you lock yourself out. This is the one phase where you log in to the server directly rather than only attacking it from Kali.
+
 - **Report all actions you take.** List every vulnerability you found and how you fixed it.
 - **Look back at the enumeration phase.** Is there anything suspicious that you have not checked yet?
 - **Locally developed source code:** The best solution is to fix the vulnerabilities so that everything continues to work. For this project, however, it is acceptable to "temporarily" disable or block vulnerable services and replace the frontend with a message such as "Update in progress".
 - **Available patches and updates:** You cannot install updates on the target VM. Instead, for each vulnerable package or piece of software, document:
   - the software and its **installed version** (e.g. from `dpkg -l <package>` or `<program> --version` on the target VM)
-  - the **vulnerability** (CVE number or security advisory, if one exists)
+  - the **vulnerability** (CVE number or security advisory, if one exists) and its **weakness type** (CWE)
+  - the **severity** (High / Medium / Low, or CVSS)
   - the **patched version or update** that fixes it, and where you found it (e.g. the vendor's website)
   - the **mitigation** you applied instead, e.g. a configuration change or disabling the vulnerable feature
+- **Findings without a CVE:** issues in the locally-developed code or configuration (for example SQL injection, insecure file permissions, or weak password storage) usually have **no CVE**. Classify these by **CWE** and severity, and document the fix you applied and how you verified it.
 - **Keep the server working.** Do not simply shut everything down, the server must still be able to perform its primary functions.
 - **Don't lock yourself out.** Keep at least port 22 (SSH) open. If you get locked out anyway, ask for help.
 - **Verify your fixes.** After each fix, repeat the attack from Kali to confirm that it no longer works.
 - **No root access?** If you did not complete the Privilege Escalation step, fix at least the issues that can be fixed with normal user privileges.
-
