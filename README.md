@@ -43,7 +43,7 @@ You are provided with a vulnerable VM representing Sec-Org's server environment 
 
 ### Update — Revised Target VM (October 2025)
 
-The Target VM was updated on **3 October**. If you download `sec-org.ova` after the 3rd of October, you already have the updated version and can ignore this notice.
+The Target VM was updated on **3 October**. If you download `sec-org.ova` after 17:00 o'clock on the 3rd of October, you already have the updated version and can ignore this notice.
 
 **If you started work on the course project before 3 October**, please switch to the new `sec-org.ova`. The update fixes a privilege-escalation misconfiguration and improves compatibility for Apple Silicon Macs. **Your approach does not change** — the same services, the same vulnerabilities, and the same intended attack paths all still apply, so any reconnaissance, enumeration and foothold work you have already documented remains valid. You will, however, need to **re-capture your flags** from the new VM.
 
