@@ -43,15 +43,25 @@ You are provided with a vulnerable VM representing Sec-Org's server environment 
 
 ### Update — Revised Target VM (October 2025)
 
-The Target VM was updated on **3 October**. If you download `sec-org.ova` after 17:00 o'clock on the 3rd of October, you already have the updated version and can ignore this notice.
+The Target VM was updated on **3 October at 17:00**. If you downloaded `sec-org.ova` after that time, you already have the updated version and can ignore this notice.
 
-**If you started work on the course project before 3 October**, please switch to the new `sec-org.ova`. The update fixes a privilege-escalation misconfiguration and improves compatibility for Apple Silicon Macs. **Your approach does not change** — the same services, the same vulnerabilities, and the same intended attack paths all still apply, so any reconnaissance, enumeration and foothold work you have already documented remains valid. You will, however, need to **re-capture your flags** from the new VM.
+**The update fixes a privilege-escalation misconfiguration and improves compatibility for Apple Silicon Macs.** 
+
+Nothing changed in terms of new content being added to the course project, the "old" and "new" course projects still work the same, just with tweaks to the privilege-escalation process. The same services, vulnerabilities, and intended attack paths all still apply, so any reconnaissance, enumeration and foothold work you have already done and documented remains valid.
+
+#### If you started before 3 October
+
+**If you already finished the "old" course project, including finding all three flags and successfully carrying out the privilege escalation, on the old VM:**
+Contact me directly before redoing anything. In many cases I can accept your existing work. I'll confirm individually based on your report. Please don't post details of how you reached any flag to any classmates.
+
+**If you have not yet finished the "old" course project, you still need the root flag, or haven't captured all three flags:**
+Switch to the new `sec-org.ova` and continue from where you are. You won't have to redo the entire project, only the parts relevant to gaining access to all three flags and getting root, i.e., successfully performing the privilege escalation. Nothing else has changed in the project, you don't need to look for anything new. You won't lose your written work, but you will need to **re-capture your flags** from the new VM, since flags are unique per VM.
 
 **What you need to do:**
-1. Download the new `sec-org.ova` and import it, following [Getting Started](#getting-started).
-    - Delete or set aside the old Target VM so you don't mix them up. 
-2. If you already had completed the access and privilege-escalation steps on the old VM, the you need to re-run them on the updated VM and re-record the new `flag.txt` values.
-    - Make sure every flag in your penetration testing report is a **`CTFv2{...}`** flag (see the flag-format note below).
+1. Download the new `sec-org.ova` and import it, following [Getting Started](#getting-started). Move the old Target VM so you don't mix them up.
+2. Re-run your access and privilege-escalation steps on the new VM and record the new `flag.txt` values.
+    - Remember that you don't have to redo the entire project from scratch, just the privilege-escalation to be able to obtain all of the new flags.
+3. Make sure every flag in your penetration testing report is a **`CTFv2{...}`** flag (see the flag-format note below).
 
 **Flag format.** Valid flags now start with **`CTFv2{`**. Flags from the previous VM (which started with `CTF{`) are **no longer accepted**. Submit each flag exactly as shown in `flag.txt`, including the `CTFv2{` prefix and the closing `}`.
 
