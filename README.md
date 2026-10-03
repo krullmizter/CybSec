@@ -95,7 +95,7 @@ Total course project points: **60 points**
 
 ## Getting Started
 1. **Read the Scope & Rules of Engagement.**
-2. **Download the pre-built Target VM** (`sec-org.ova`) to your host computer (not your Kali VM) from the [Sec-Org download page](https://arcadauas-my.sharepoint.com/:u:/g/personal/granviks_arcada_fi/IQDjhIOeIZzSRqGmqK0DnwIMAYHgWQZxFvhF-nCgBjqAcAY?e=Z48BtT).
+2. **Download the pre-built Target VM** (`sec-org.ova`) to your host computer (not your Kali VM) from the .
 3. **Set up the Target VM and your Kali VM.**
 Check which type of processor your host computer has, then follow the matching instructions below:
 - **Apple Silicon Mac** – M1, M2, M3, M4 or M5
