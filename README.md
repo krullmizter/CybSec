@@ -309,11 +309,10 @@ A couple of things you will likely need are not ready to use out of the box:
 
 ### Technical Troubleshooting
 
-- **"Target VM is not reachable":** Check that the Target VM has finished booting (it can take several minutes under UTM), that both VMs use the host-only network, and that `ip -br addr` on Kali shows a `192.168.56.x` address.
-- **Target VM boots but has no `192.168.56.102` address:** At the Target VM's own console, log in and run `ip -br addr`. The VM expects its network interface name to begin with `e` (e.g. `enp0s3`, `ens3`). If your interface has a different name and no `192.168.56.102` address is assigned, contact me.
-- **No Host Only option for the second adapter in UTM:** Your Kali VM uses the Apple Virtualization backend and needs to be recreated with QEMU.
-- **"Nonexistent host networking interface" error in VirtualBox:** The VM's host-only adapter name doesn't exist on your computer. Open **Settings → Network** and select your host-only network in the **Name** field.
-- **Kali and the target VM run in different apps (e.g. VMware Fusion and UTM):** They are on separate networks and cannot reach each other. Run both VMs in the same app.
+- _**"Target VM is not reachable":**_ Check that the Target VM has finished booting (it can take several minutes under UTM), that both VMs use the host-only network, and that `ip -br addr` on Kali shows a `192.168.56.x` address.
+- _**No Host Only option for the second adapter in UTM:**_ Your Kali VM uses the Apple Virtualization backend and needs to be recreated with QEMU.
+- _**"Nonexistent host networking interface" error in VirtualBox:**_ The VM's host-only adapter name doesn't exist on your computer. Open **Settings → Network** and select your host-only network in the **Name** field.
+- _**Kali and the target VM run in different apps (e.g. VMware Fusion and UTM):**_ They are on separate networks and cannot reach each other. Run both VMs in the same app.
 
 ---
 
@@ -379,7 +378,7 @@ Fix all security issues you find. This is an important part of the project: once
 
 > ℹ️ **The target VM has no Internet access and must stay on the host-only network during the whole project.** Most security issues can be fixed without Internet access, for example by changing credentials, permissions, configuration or source code.
 
-You do this work *on* the target, using the access you gained during the test (your shell or root) — or the VM's own console if you lock yourself out. This is the one phase where you log in to the server directly rather than only attacking it from Kali.
+You do this work *on* the target, using the access you gained during the test (your shell or root), or the VM's own console if you lock yourself out. This is the one phase where you log in to the server directly rather than only attacking it from Kali.
 
 - **Report all actions you take.** List every vulnerability you found and how you fixed it.
 - **Look back at the enumeration phase.** Is there anything suspicious that you have not checked yet?
