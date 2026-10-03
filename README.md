@@ -48,9 +48,10 @@ The Target VM was updated on **3 October**. If you download `sec-org.ova` after 
 **If you started work on the course project before 3 October**, please switch to the new `sec-org.ova`. The update fixes a privilege-escalation misconfiguration and improves compatibility for Apple Silicon Macs. **Your approach does not change** — the same services, the same vulnerabilities, and the same intended attack paths all still apply, so any reconnaissance, enumeration and foothold work you have already documented remains valid. You will, however, need to **re-capture your flags** from the new VM.
 
 **What you need to do:**
-1. Download the new `sec-org.ova` and import it, following [Getting Started](#getting-started). Delete or set aside the old Target VM so you don't mix them up.
-2. Re-run your access and privilege-escalation steps on the new VM and record the new `flag.txt` values.
-3. Make sure every flag in your report is a **`CTFv2{...}`** flag (see the flag-format note below).
+1. Download the new `sec-org.ova` and import it, following [Getting Started](#getting-started).
+    - Delete or set aside the old Target VM so you don't mix them up. 
+2. If you already had completed the access and privilege-escalation steps on the old VM, the you need to re-run them on the updated VM and re-record the new `flag.txt` values.
+    - Make sure every flag in your penetration testing report is a **`CTFv2{...}`** flag (see the flag-format note below).
 
 **Flag format.** Valid flags now start with **`CTFv2{`**. Flags from the previous VM (which started with `CTF{`) are **no longer accepted**. Submit each flag exactly as shown in `flag.txt`, including the `CTFv2{` prefix and the closing `}`.
 
