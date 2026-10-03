@@ -21,6 +21,7 @@ Subject: Information for the Sec-Org Penetration Test
 ## Contents
 
 - [Project Overview](#project-overview) — scope, rules of engagement, submission and grading
+  - [Update — Revised Target VM (October 2025)](#update--revised-target-vm-october-2025) — **read this if you started before 3 October**
 - [Getting Started](#getting-started) — download and set up the Target VM (Apple Silicon or Intel/Windows)
 - [Kali Linux Configuration](#kali-linux-configuration) — network adapters and the setup script
 - [Penetration Testing Report](#penetration-testing-report) — what to write and submit
@@ -37,6 +38,25 @@ You will use the penetration-testing knowledge and techniques covered in this co
 You are provided with a vulnerable VM representing Sec-Org's server environment and infrastructure. From here on, it is referred to as the _"Target VM"_.
  
 > The download link for the Target VM (`sec-org.ova`) is in the [Getting Started](#getting-started) section.
+
+### Update — Revised Target VM (October 2025)
+
+The Target VM was updated on **3 October**. If you download `sec-org.ova` after the 3rd of October, you already have the updated version and can ignore this notice.
+
+**If you started work on the course project before 3 October**, please switch to the new `sec-org.ova`. The update fixes a privilege-escalation misconfiguration and improves compatibility for Apple Silicon Macs. **Your approach does not change** — the same services, the same vulnerabilities, and the same intended attack paths all still apply, so any reconnaissance, enumeration and foothold work you have already documented remains valid. You will, however, need to **re-capture your flags** from the new VM.
+
+**What you need to do:**
+1. Download the new `sec-org.ova` and import it, following [Getting Started](#getting-started). Delete or set aside the old Target VM so you don't mix them up.
+2. Re-run your access and privilege-escalation steps on the new VM and record the new `flag.txt` values.
+3. Make sure every flag in your report is a **`CTFv2{...}`** flag (see the flag-format note below).
+
+**Flag format.** Valid flags now start with **`CTFv2{`**. Flags from the previous VM (which started with `CTF{`) are **no longer accepted**. Submit each flag exactly as shown in `flag.txt`, including the `CTFv2{` prefix and the closing `}`.
+
+**Deadline.** Because this change was made mid-project, the deadline has been **extended to 23 October**. The late-submission policy is unchanged and applies from the new date, so no one is penalised for the switch.
+
+If the change causes you any problem, or you are unsure whether something you already did still counts, contact me.
+
+---
 
 ### Scope & Rules of Engagement
 
@@ -87,7 +107,7 @@ Total course project points: **60 points**
 | **15** | Fixing security issues, including documenting available patches and updates |
 
 ⚠️ **Notice**
-- Each flag is a file named `flag.txt`. Its contents look like `CTF{...}` — submit the **whole** string, exactly as shown, including the `CTF{` and closing `}`.
+- Each flag is a file named `flag.txt`. Its contents look like `CTFv2{...}` — submit the **whole** string, exactly as shown, including the `CTFv2{` prefix and the closing `}`.
 - Flags are unique to each Target VM, so you cannot share your flags with or use flags from anyone else.
 - If you submit as a group, submit the flags of all group members in the same submission.
   - If you are sharing a Target VM then only one set of flags needs to be submitted. However you need to explain how you worked as a group and how you technically carried out the course project.
@@ -95,7 +115,7 @@ Total course project points: **60 points**
 
 ## Getting Started
 1. **Read the Scope & Rules of Engagement.**
-2. **Download the pre-built Target VM** (`sec-org.ova`) to your host computer (not your Kali VM) from the .
+2. **Download the pre-built Target VM** (`sec-org.ova`) to your host computer (not your Kali VM): [sec-org.fi.ova](https://arcadauas-my.sharepoint.com/:u:/g/personal/granviks_arcada_fi/IQBzl5eLKVkbSKuzzv6N1ToPAcxS-xbpfla_sEOicfGOaCY?e=zi2Hqg).
 3. **Set up the Target VM and your Kali VM.**
 Check which type of processor your host computer has, then follow the matching instructions below:
 - **Apple Silicon Mac** – M1, M2, M3, M4 or M5
@@ -166,9 +186,9 @@ Instead, you will run the Target VM as an emulated x86-64 virtual machine in UTM
 2. When the VM is ready, you should see something similar to:
 
   ```
-  Ubuntu 20.04.5 LTS firman tty1
+  Ubuntu 20.04.5 LTS sec-org tty1
 
-  firman login:
+  sec-org login:
   ```
 
 The Target VM must remain powered on while you work on the project. It represents the vulnerable server infrastructure, and you will perform the penetration test against it from your Kali Linux VM. You can now leave it running; you won't need to interact with it directly from here on.
@@ -203,9 +223,9 @@ If you are using an Intel Mac or a Windows PC, you can run the provided x86-64 T
    - When the VM is ready, you should see something similar to:
 
   ```
-  Ubuntu 20.04.5 LTS firman tty1
+  Ubuntu 20.04.5 LTS sec-org tty1
 
-  firman login:
+  sec-org login:
   ```
 
 The Target VM must remain powered on while you work on the project. It represents the vulnerable server infrastructure, and you will perform the penetration test against it from your Kali Linux VM. You can now leave it running; you won't need to interact with it directly from here on.
@@ -277,6 +297,7 @@ A couple of things you will likely need are not ready to use out of the box:
 ### Technical Troubleshooting
 
 - **"Target VM is not reachable":** Check that the Target VM has finished booting (it can take several minutes under UTM), that both VMs use the host-only network, and that `ip -br addr` on Kali shows a `192.168.56.x` address.
+- **Target VM boots but has no `192.168.56.102` address:** At the Target VM's own console, log in and run `ip -br addr`. The VM expects its network interface name to begin with `e` (e.g. `enp0s3`, `ens3`). If your interface has a different name and no `192.168.56.102` address is assigned, contact me.
 - **No Host Only option for the second adapter in UTM:** Your Kali VM uses the Apple Virtualization backend and needs to be recreated with QEMU.
 - **"Nonexistent host networking interface" error in VirtualBox:** The VM's host-only adapter name doesn't exist on your computer. Open **Settings → Network** and select your host-only network in the **Name** field.
 - **Kali and the target VM run in different apps (e.g. VMware Fusion and UTM):** They are on separate networks and cannot reach each other. Run both VMs in the same app.
