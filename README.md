@@ -39,6 +39,8 @@ You are provided with a vulnerable VM representing Sec-Org's server environment 
  
 > The download link for the Target VM (`sec-org.ova`) is in the [Getting Started](#getting-started) section.
 
+---
+
 ### Update — Revised Target VM (October 2025)
 
 The Target VM was updated on **3 October**. If you download `sec-org.ova` after the 3rd of October, you already have the updated version and can ignore this notice.
