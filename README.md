@@ -266,15 +266,15 @@ Shut down your Kali VM first.
 
 #### UTM (Apple Silicon)
 
-1. Open the Kali VM's settings and go to **Network**.
-2. **Adapter 1** should be set to **Shared Network**. Leave it as it is.
-3. Add a second adapter with **New… → Network**
-    - **Network Mode** to **Host Only**
-    - **Host Network** leave it as Default
-    - **Emulated Network Card** Should be set to `virtio-net-pci` bu default, change it to that if not.
-    - **Mac Address** You don't have to change it, a new MAC address will be generated for each Target VM instance by default.
-4. On the same **Network** page, click **Show Advanced Settings** and enter:
-   
+1. Shut down the VM, then open its settings and go to **Network**.
+2. The first network interface (**Adapter 1**) should be set to **Shared Network**, leave it as it is. This is Kali's internet connection.
+3. Add a second interface: in the left sidebar, under **Devices**, click **New…** and choose **Network** as the device type. Select the new **Network** entry and configure it:
+    - **Network Mode** → **Host Only**
+    - **Host Network** → leave as **Default (private)**
+    - **Emulated Network Card** → should be `virtio-net-pci` by default; set it to that if it isn't.
+    - **MAC Address** → leave it. A unique MAC is generated automatically for each interface.
+4. With that second interface still selected, tick **Show Advanced Settings** and enter:
+
    | Setting       | Value             |
    |---------------|-------------------|
    | Guest Network | `192.168.56.0/24` |
