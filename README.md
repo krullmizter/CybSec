@@ -172,20 +172,24 @@ Instead, you will run the Target VM as an emulated x86-64 virtual machine in UTM
 1. Open UTM and select **Create a New Virtual Machine → Emulate → Other**.
 2. Skip the boot ISO by selecting **None** as the boot device.
 3. Select **x86_64** as the architecture, and set **2** CPU cores and **2048–4096 MB** of memory.
-4. Accept the default storage settings. You will replace this drive in Step 3.
+4. Accept the default storage settings. You will replace this drive in Step #3.
 5. On the summary page, name the VM `sec-org`, select **Open VM Settings**, and click **Save**.
 
 #### Step 3: Configure the Target VM
 
+**Open VM Settings:**
 1. **Drives:** Delete the blank default drive. Then select **New… → Import** and select `sec-org.qcow2`.
     - Set the interface to **VirtIO** (if the VM won't boot, try **SATA**).
-2. **Network:** Set **Network Mode** to **Host Only**. Do not add any other network devices.
+2. **Network:**
+    - **Network Mode** to **Host Only**
+    - **Host Network** leave it as Default
+    - **Emulated Network Card** Leave the default network card as it is.
+    - **Mac Address** You don't have to change it, a new MAC address will be generated for each Target VM instance by default.
 3. On the same **Network** page, click **Show Advanced Settings** and enter:
-
+   
    | Setting       | Value             |
    |---------------|-------------------|
    | Guest Network | `192.168.56.0/24` |
-   | Host Address  | `192.168.56.1`    |
    | DHCP Start    | `192.168.56.110`  |
    | DHCP End      | `192.168.56.254`  |
 
@@ -262,17 +266,18 @@ Shut down your Kali VM first.
 
 #### UTM (Apple Silicon)
 
-> ⚠️ **Important:** Your Kali VM must use UTM's **QEMU** backend, not **Apple Virtualization**. VMs using Apple Virtualization do not support Host Only networking, so they cannot reach the Target VM.
-
 1. Open the Kali VM's settings and go to **Network**.
 2. **Adapter 1** should be set to **Shared Network**. Leave it as it is.
-3. Add a second adapter with **New… → Network** and set **Network Mode** to **Host Only**.
-4. Click **Show Advanced Settings** and enter the same values as for the Target VM:
-
+3. Add a second adapter with **New… → Network**
+    - **Network Mode** to **Host Only**
+    - **Host Network** leave it as Default
+    - **Emulated Network Card** Should be set to `virtio-net-pci` bu default, change it to that if not.
+    - **Mac Address** You don't have to change it, a new MAC address will be generated for each Target VM instance by default.
+4. On the same **Network** page, click **Show Advanced Settings** and enter:
+   
    | Setting       | Value             |
    |---------------|-------------------|
    | Guest Network | `192.168.56.0/24` |
-   | Host Address  | `192.168.56.1`    |
    | DHCP Start    | `192.168.56.110`  |
    | DHCP End      | `192.168.56.254`  |
 
@@ -311,9 +316,9 @@ A couple of things you will likely need are not ready to use out of the box:
 
 ### Technical Troubleshooting
 
-- _**"Target VM is not reachable":**_ Check that the Target VM has finished booting (it can take several minutes under UTM), that both VMs use the host-only network, and that `ip -br addr` on Kali shows a `192.168.56.x` address.
+- _**Target VM is not reachable:**_ Check that the Target VM has finished booting (it can take several minutes under UTM), that both VMs use the host-only network, and that `ip -br addr` on Kali shows a `192.168.56.x` address.
 - _**No Host Only option for the second adapter in UTM:**_ Your Kali VM uses the Apple Virtualization backend and needs to be recreated with QEMU.
-- _**"Nonexistent host networking interface" error in VirtualBox:**_ The VM's host-only adapter name doesn't exist on your computer. Open **Settings → Network** and select your host-only network in the **Name** field.
+- _**Nonexistent host networking interface error in VirtualBox:**_ The VM's host-only adapter name doesn't exist on your computer. Open **Settings → Network** and select your host-only network in the **Name** field.
 - _**Kali and the target VM run in different apps (e.g. VMware Fusion and UTM):**_ They are on separate networks and cannot reach each other. Run both VMs in the same app.
 
 ---
