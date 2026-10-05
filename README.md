@@ -301,16 +301,80 @@ Shut down your Kali VM first.
 
 The script above configures the hostname settings required for the assignment and verifies that the Target VM is reachable.
 
-**If the script completes successfully, the course project environment is ready 🎉** From here, use the penetration-testing methodology covered in the course to assess the Sec-Org environment and meet the requirements in the email from the boss.
+### Step 3: Finalize
 
-> 💾 **Take a snapshot now.** _This is not mandatory, but more of a safeguard_. Once both VMs are set up and talking to each other, take a snapshot of the Target VM and of the Kali VM. If anything breaks later, you can roll back instead of starting over. Take another snapshot before the **Remediations** phase, so you can re-run your attacks against the original, vulnerable state to confirm your fixes work.
+**If the script completes successfully, the course project environment is ready 🎉**
 
-### Tools and wordlists on Kali
+However, there are still some finalizing configurations and checks you should perform before you start to hack.
 
-A couple of things you will likely need are not ready to use out of the box:
+#### 💾 Take a snapshot (or clone)
+_This is not mandatory, but a useful safeguard._
+
+Once both VMs are set up and talking to each other, save a known-good copy of each. If anything breaks later, you can roll back instead of starting over.
+
+1. **UTM (Apple Silicon) — Clone:** right-click the VM in the sidebar → **Clone**. This makes a full, independent copy and is the most reliable safeguard in UTM.
+2. **VirtualBox — Snapshot:** select the VM in VirtualBox Manager, then open the **Snapshots** view (the **Machine Tools** menu, the list/☰ icon next to the VM name, or the button in the top-right). Click the **Take** button (camera icon), give the snapshot a name, and confirm.
+    - _UTM also has a snapshot feature, but it isn't available for every VM depending on its disk/config, if the option is missing or greyed out, use a clone instead._
+    - While the VM is running you can also use **Machine → Take Snapshot** (Host + T).
+
+Take another known-good copy before the **Remediations** phase, so you can re-run your attacks against the original, vulnerable state to confirm your fixes work.
+
+#### 📋 Tools and wordlists on Kali
+A couple of wordlists you'll likely need aren't ready to use out of the box:
 
 - **`rockyou` wordlist:** ships compressed. Unpack it once with `sudo gunzip /usr/share/wordlists/rockyou.txt.gz`, after which it lives at `/usr/share/wordlists/rockyou.txt`.
 - **SecLists** (large collection of wordlists, useful for subdomain/directory brute-forcing) is not installed by default: `sudo apt update && sudo apt install seclists`. It installs under `/usr/share/seclists/`.
+
+#### 🛜 Enabling the UTM Host-Only Interface Inside Kali (Apple Silicon)
+
+After adding the second (Host Only) adapter in UTM, Kali has a second virtual network card — however, UTM only provides the *hardware*.
+Inside Kali, `NetworkManager` still has to bring that interface up and request an address.
+
+In most cases this is automatic: Kali auto-connects new wired interfaces over DHCP, so the Host Only interface picks up a `192.168.56.x` address on its own with nothing to configure. **However, this isn't always reliable** — the interface may fail to activate on its own, so you sometimes have to set it up manually.
+
+1. Check whether it came up automatically
+
+```bash
+ip -br addr
+```
+
+If one interface already shows a `192.168.56.x` address, it's working — you're done. If not, continue below.
+
+2. Identify the Host Only interface
+
+```bash
+ip -br addr
+```
+
+This lists each interface with its state and IP address:
+
+- The **Shared Network** adapter (internet, usually `eth0`) will have an address, but **not** in the `192.168.56.x` range.
+- The **Host Only** adapter (usually `eth1`) is the one on the `192.168.56.x` subnet. If it already shows a `192.168.56.x` address it came up on its own; if it shows no IPv4 address, that's the interface to configure next.
+
+(If you only need the interface names and link state, `ip -br link` shows those.)
+
+3. Create the connection manually
+
+Replace `eth1` with the name you found above for the Host Only interface:
+
+```bash
+sudo nmcli con add type ethernet ifname eth1 con-name hostonly ipv4.method auto ipv4.never-default yes ipv6.method ignore
+sudo nmcli con up hostonly
+```
+
+> `ipv4.never-default yes` keeps your default route (and therefore internet access) on the Shared Network adapter, so the Host Only interface can't take over and break browsing.
+
+This creates a saved connection profile, so it persists across reboots — you only need to do it once.
+
+4. Verify
+
+```bash
+ip -br addr            # the Host Only interface should now show a 192.168.56.x address
+ping -c3 <target-ip>   # should reach the target (the address you find for it during recon)
+ping -c3 8.8.8.8       # internet should still work
+```
+
+**That was it!** Start to hack and have fun. If you run into issues, please contact me directly and we can sort things out.
 
 ---
 
@@ -319,7 +383,7 @@ A couple of things you will likely need are not ready to use out of the box:
 - _**Target VM is not reachable:**_ Check that the Target VM has finished booting (it can take several minutes under UTM), that both VMs use the host-only network, and that `ip -br addr` on Kali shows a `192.168.56.x` address.
 - _**No Host Only option for the second adapter in UTM:**_ Your Kali VM uses the Apple Virtualization backend and needs to be recreated with QEMU.
 - _**Nonexistent host networking interface error in VirtualBox:**_ The VM's host-only adapter name doesn't exist on your computer. Open **Settings → Network** and select your host-only network in the **Name** field.
-- _**Kali and the target VM run in different apps (e.g. VMware Fusion and UTM):**_ They are on separate networks and cannot reach each other. Run both VMs in the same app.
+- _**Kali and the target VM run in different apps (e.g. VMware Fusion and UTM):**_ They are on separate networks and cannot reach each other. The simplest fix is to run both VMs in the same app.
 
 ---
 
