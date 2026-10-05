@@ -178,24 +178,24 @@ Instead, you will run the Target VM as an emulated x86-64 virtual machine in UTM
 #### Step 3: Configure the Target VM
 
 **Open VM Settings:**
-1. **Drives:** Delete the blank default drive. Then select **New… → Import** and select `sec-org.qcow2`.
+1. Make sure that the Target VM is powered off.
+2. Click on **Drives:** Delete the blank default drive. Then select **New… → Import** and select `sec-org.qcow2`.
     - Set the interface to **VirtIO** (if the VM won't boot, try **SATA**).
-2. **Network:**
-    - **Network Mode** to **Host Only**
-    - **Host Network** leave it as Default
-    - **Emulated Network Card** Leave the default network card as it is.
-    - **Mac Address** You don't have to change it, a new MAC address will be generated for each Target VM instance by default.
-3. On the same **Network** page, click **Show Advanced Settings** and enter:
-   
+3. Add a second interface: in the left sidebar, under **Devices**, click **New…** and choose **Network** as the device type. Select the new **Network** entry and configure it:
+    - **Network Mode** → **Host Only**.
+    - **Host Network** → leave as **Default (private)**.
+    - **Emulated Network Card** → leave as is.
+    - **MAC Address** → leave as is.
+4. With that second interface still selected, tick **Show Advanced Settings** and enter:
+
    | Setting       | Value             |
    |---------------|-------------------|
    | Guest Network | `192.168.56.0/24` |
    | DHCP Start    | `192.168.56.110`  |
    | DHCP End      | `192.168.56.254`  |
 
-   These settings place the Target VM on the network it expects and keep DHCP-assigned addresses from conflicting with the target's static IP address.
-
-4. Click **Save**.
+   _These settings place the Target VM on the network it expects and keep DHCP-assigned addresses from conflicting with the target's static IP address._
+5. Click **Save**.
 
 #### Step 4: Start the Target VM
 
@@ -266,14 +266,14 @@ Shut down your Kali VM first.
 
 #### UTM (Apple Silicon)
 
-1. Shut down the VM, then open its settings and go to **Network**.
-2. The first network interface (**Adapter 1**) should be set to **Shared Network**, leave it as it is. This is Kali's internet connection.
+1. Open the Kali VM's settings and go to **Network**.
+2. The first network interface (**Adapter 1**) should be set to **Shared Network**, leave it as it is. _This is Kali's internet connection._
 3. Add a second interface: in the left sidebar, under **Devices**, click **New…** and choose **Network** as the device type. Select the new **Network** entry and configure it:
     - **Network Mode** → **Host Only**
     - **Host Network** → leave as **Default (private)**
-    - **Emulated Network Card** → should be `virtio-net-pci` by default; set it to that if it isn't.
-    - **MAC Address** → leave it. A unique MAC is generated automatically for each interface.
-4. With that second interface still selected, tick **Show Advanced Settings** and enter:
+    - **Emulated Network Card** → should be `virtio-net-pci` by default, set it to that if it isn't.
+    - **MAC Address** → leave as is.
+5. With that second interface still selected, tick **Show Advanced Settings** and enter:
 
    | Setting       | Value             |
    |---------------|-------------------|
@@ -281,29 +281,29 @@ Shut down your Kali VM first.
    | DHCP Start    | `192.168.56.110`  |
    | DHCP End      | `192.168.56.254`  |
 
-5. Click **Save**.
+6. Click **Save**.
 
 #### VirtualBox (Intel Mac or Windows PC)
 
 1. Right-click your Kali VM and select **Settings → Network**.
 2. **Adapter 1** should be enabled and attached to **NAT**. Leave it as it is.
-3. Enable **Adapter 2** and attach it to **Host-only Adapter**, using the same host-only network as the Target VM. On an Intel Mac with macOS 13 or later, use **Host-only Network** instead.
+3. Enable **Adapter 2** and attach it to **Host-only Adapter**, using the same host-only network as the Target VM. _On an Intel Mac with macOS 13 or later, use **Host-only Network** instead._
 4. Click **OK**.
 
 ### Step 2: Start Kali and run the setup script
 
-1. Make sure the Sec-Org Target VM is running.
+1. Make sure the Target VM is running.
 2. Start your Kali VM, sign in, and run the following in a Kali terminal:
 
     ```bash
     curl -fsSL https://raw.githubusercontent.com/krullmizter/CybSec/main/setup.sh | sudo bash
     ```
 
-The script configures the hostname settings required for the assignment and verifies that the Target VM is reachable.
+The script above configures the hostname settings required for the assignment and verifies that the Target VM is reachable.
 
-If the script completes successfully, the course project environment is ready. From here, use the penetration-testing methodology covered in the course to assess the Sec-Org environment and meet the requirements in the email from the boss.
+**If the script completes successfully, the course project environment is ready 🎉** From here, use the penetration-testing methodology covered in the course to assess the Sec-Org environment and meet the requirements in the email from the boss.
 
-> 💾 **Take a snapshot now.** Once both VMs are set up and talking to each other, take a snapshot of the Target VM (and of Kali). If anything breaks later, you can roll back instead of starting over. Take another snapshot before the **Remediations** phase, so you can re-run your attacks against the original, vulnerable state to confirm your fixes work.
+> 💾 **Take a snapshot now.** _This is not mandatory, but more of a safeguard_. Once both VMs are set up and talking to each other, take a snapshot of the Target VM and of the Kali VM. If anything breaks later, you can roll back instead of starting over. Take another snapshot before the **Remediations** phase, so you can re-run your attacks against the original, vulnerable state to confirm your fixes work.
 
 ### Tools and wordlists on Kali
 
