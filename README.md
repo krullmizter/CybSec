@@ -23,7 +23,7 @@ Subject: Information for the Sec-Org Penetration Test
 ## Contents
 
 - [Project Overview](#project-overview) — scope, rules of engagement, submission and grading
-  - [Update — Revised Target VM (October 2025)](#update--revised-target-vm-october-2025) — **read this if you started before 3 October**
+  - [Update — Revised Target VM (October 2026)](#update--revised-target-vm-october-2026) — **read this if you started before 3 October**
 - [Getting Started](#getting-started) — download and set up the Target VM (Apple Silicon or Intel/Windows)
 - [Kali Linux Configuration](#kali-linux-configuration) — network adapters and the setup script
 - [Penetration Testing Report](#penetration-testing-report) — what to write and submit
@@ -43,26 +43,25 @@ You are provided with a vulnerable VM representing Sec-Org's server environment 
 
 ---
 
-### Update — Revised Target VM (October 2025)
+### Update — Revised Target VM (October 2026)
 
 The Target VM was updated on **3 October at 17:00**. If you downloaded `sec-org.ova` after that time, you already have the updated version and can ignore this notice.
 
-**The update fixes a privilege-escalation misconfiguration and improves compatibility for Apple Silicon Macs.** 
+**The update fixes a privilege-escalation misconfiguration and improves compatibility for Apple Silicon Macs.**
 
-Nothing changed in terms of new content being added to the course project, the "old" and "new" course projects still work the same, just with tweaks to the privilege-escalation process. The same services, vulnerabilities, and intended attack paths all still apply, so any reconnaissance, enumeration and foothold work you have already done and documented remains valid.
+No new content was added to the course project. The "old" and "new" versions work the same way — the only change is a tweak to the privilege-escalation process. The same services, vulnerabilities, and intended attack paths still apply, so any reconnaissance, enumeration and foothold work you have already done and documented remains valid.
 
-#### If you started work on the course project before 3 October
+#### How the update affects you
 
-**If you already finished the "old" course project, including finding all flags and successfully carrying out the privilege escalation, on the old VM:**
-Contact me directly before redoing anything. In many cases I can accept your existing work. I'll confirm individually based on your report. _Please don't post details of how you reached any flag to any classmates._
+1. **If you are using the old Target VM…**
+    1. **…but you have not yet reached the privilege-escalation steps:** Switch to the updated `sec-org.ova` and continue from where you are. Everything before privilege escalation is identical on both versions, so you won't lose any written work, you'll just need to **re-capture your flags** from the new VM, since flags are unique per VM.
+    2. **…but you are at, past, or have finished privilege escalation (all flags obtained):** Contact me directly before redoing anything. In many cases I can accept your existing work, and I'll confirm individually based on your report. You may still need to redo the privilege escalation and re-capture your flags on the new VM — I'll let you know. _Please don't share how you reached any flag with classmates._
+2. **If you are using the new Target VM:** Just continue with the course project as described in [Getting Started](#getting-started) — nothing extra to do.
 
-**If you have not yet finished the "old" course project, you still need the root flag, or haven't captured all three flags:**
-Switch to the new `sec-org.ova` and continue from where you are. You won't have to redo the entire project, only the parts relevant to gaining access to all of the flags and getting root, i.e., successfully performing the privilege escalation. Nothing else has changed in the project, you don't need to look for anything new. You won't lose your written work, but you will need to **re-capture your flags** from the new VM, since flags are unique per VM.
-
-**What you need to do:**
+**What you need to do (if switching to the new VM):**
 1. Download the new `sec-org.ova` and import it, following [Getting Started](#getting-started). _Make sure that you don't mix up the old and new VMs._
 2. Re-run your access and privilege-escalation steps on the new VM and record the new `flag.txt` values.
-    - Remember that you don't have to redo the entire project from scratch, just the privilege-escalation to be able to obtain all of the new flags.
+    - Remember that you don't have to redo the entire project from scratch, just the privilege escalation needed to obtain all of the new flags.
 3. Make sure every flag in your penetration testing report is a **`CTFv2{...}`** flag (see the flag-format note below).
 
 **Flag format.** Valid flags now start with **`CTFv2{`**. Flags from the previous VM (which started with `CTF{`) are **no longer accepted**. Submit each flag exactly as shown in `flag.txt`, including the `CTFv2{` prefix and the closing `}`.
